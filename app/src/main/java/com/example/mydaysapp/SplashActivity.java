@@ -22,7 +22,7 @@ public class SplashActivity extends AppCompatActivity
             public void run() {
                 // Inicia la siguiente actividad después del tiempo de retardo
                 startActivity(new Intent(SplashActivity.this,
-                        MainActivity.class));
+                        LoginActivity.class));
 
                 finish();
             }
