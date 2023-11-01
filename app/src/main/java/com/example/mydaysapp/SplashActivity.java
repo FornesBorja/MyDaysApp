@@ -20,7 +20,6 @@ public class SplashActivity extends AppCompatActivity
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                // Inicia la siguiente actividad después del tiempo de retardo
                 startActivity(new Intent(SplashActivity.this,
                         LoginActivity.class));
 
