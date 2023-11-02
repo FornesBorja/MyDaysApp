@@ -1,39 +1,107 @@
 package com.example.mydaysapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
-public class LoginActivity extends AppCompatActivity
-{
-    Button IniSesion_b, Registrar_b;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+public class LoginActivity extends AppCompatActivity {
+    Button iniciarSesion, registrar;
+    EditText contraInicio, correoInicio;
+    private FirebaseAuth mAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        IniSesion_b = findViewById(R.id.IniSesion_button);
-        Registrar_b= findViewById(R.id.registrarse_button);
-        IniSesion_b.setOnClickListener(new View.OnClickListener()
+        iniciarSesion=findViewById(R.id.iniciar_btn);
+        contraInicio=findViewById(R.id.contraini_et);
+        correoInicio=findViewById(R.id.correoini_et);
+        mAuth = FirebaseAuth.getInstance();
+        registrar=findViewById(R.id.registrar_btn);
+        registrar.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
             {
-                Intent intent = new Intent(getApplicationContext(), iniSesionActivity.class);
-                startActivity(intent);
+                startActivity(new Intent(LoginActivity.this, RegisActivity.class));
+                finish();
             }
         });
-        Registrar_b.setOnClickListener(new View.OnClickListener()
+        iniciarSesion.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
             {
-                Intent intent = new Intent(getApplicationContext(), RegisActivity.class);
-                startActivity(intent);
+                String password= contraInicio.getText().toString().trim();
+                String email= correoInicio.getText().toString().trim();
+                if(password.isEmpty() && email.isEmpty())
+                {
+                    Toast toast = Toast.makeText(LoginActivity.this, "Tienes que escribir un correo y un email", Toast.LENGTH_SHORT);
+                    toast.show();
+                } else if (password.isEmpty())
+                {
+                    Toast toast = Toast.makeText(LoginActivity.this, "Tienes que escribir una contraseña", Toast.LENGTH_SHORT);
+                    toast.show();
+                }else if(email.isEmpty())
+                {
+                    Toast toast = Toast.makeText(LoginActivity.this, "Tienes que escribir un correo", Toast.LENGTH_SHORT);
+                    toast.show();
+                }else {
+                    loginUser(email, password);
+                }
+
             }
         });
+    }
+
+    private void loginUser(String email, String password)
+    {
+        mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task)
+            {
+                if (task.isSuccessful())
+                {
+                    finish();
+                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e)
+            {
+                Toast toast = Toast.makeText(LoginActivity.this, "Login fallido", Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        });
+    }
+
+    @Override
+    protected void onStart()
+    {
+        super.onStart();
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user!= null)
+        {
+            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+            finish();
+        }
     }
 }

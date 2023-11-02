@@ -5,30 +5,69 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#B1AE91"
+    android:backgroundTint="#95bf8f"
     tools:context=".LoginActivity">
 
-    <Button
-        android:id="@+id/registrarse_button"
-        android:layout_width="132dp"
-        android:layout_height="46dp"
-        android:layout_marginTop="216dp"
-        android:backgroundTint="#C96480"
-        android:text="Registrarse"
-        android:textColor="#99D17B"
+    <EditText
+        android:id="@+id/contraini_et"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="360dp"
+        android:backgroundTint="#c96480"
+        android:ems="10"
+        android:hint="Contraseña"
+        android:inputType="textPassword"
+        android:textColor="#2C2B2B"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/correoini_et" />
+
+    <EditText
+        android:id="@+id/correoini_et"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="200dp"
+        android:backgroundTint="#c96480"
+        android:ems="10"
+        android:hint="Correo"
+        android:inputType="text"
+        android:textColor="#2C2B2B"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/IniSesion_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="316dp"
+        android:id="@+id/iniciar_btn"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="32dp"
         android:backgroundTint="#C96480"
         android:text="Iniciar sesión"
-        android:textColor="#99D17B"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textColor="#2C2B2B"
+        android:textColorHighlight="#C96480"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/contraini_et" />
+
+    <Button
+        android:id="@+id/registrar_btn"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:backgroundTint="#b47978"
+        android:text="Registrarse"
+        android:textColor="#2C2B2B"
+        android:textColorHighlight="#b47978"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iniciar_btn" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

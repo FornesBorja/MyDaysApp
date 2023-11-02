@@ -9,22 +9,20 @@ import android.os.Handler;
 public class SplashActivity extends AppCompatActivity
 {
     private static final long SPLASH_DELAY = 900;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        // Configura cualquier inicialización adicional que necesites hacer aquí
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    startActivity(new Intent(SplashActivity.this,
+                            LoginActivity.class));
+                    finish();
+                }
+            }, SPLASH_DELAY);
 
-        // Utiliza un Handler para retrasar el inicio de la siguiente actividad
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                startActivity(new Intent(SplashActivity.this,
-                        LoginActivity.class));
-
-                finish();
-            }
-        }, SPLASH_DELAY);
-    }
+        }
 }

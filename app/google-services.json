@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "823314915335",
+    "project_id": "mydaysapp-fornesb",
+    "storage_bucket": "mydaysapp-fornesb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:823314915335:android:a8cc1ebe30d08cb628caa2",
+        "android_client_info": {
+          "package_name": "com.example.mydaysapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBCrZgknhY8-6_BbUiE8DY9CO-DmSp5OV8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
