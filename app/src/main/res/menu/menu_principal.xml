@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/pastillas"
+        android:title="Pastillas"
+        android:icon="@drawable/ic_pastilla"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/notificaciones"
+        android:title="Notificaciones"
+        android:icon="@drawable/ic_notificaciones"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/opciones"
+        android:title="Opciones"
+        android:icon="@drawable/ic_opciones"
+        app:showAsAction="ifRoom"/>
+</menu>

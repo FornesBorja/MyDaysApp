@@ -1,11 +1,14 @@
 package com.example.mydaysapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
@@ -35,4 +38,30 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-}
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        getMenuInflater().inflate(R.menu.menu_principal,menu);
+        return super.onCreateOptionsMenu(menu);
+
+    }
+    public boolean onOptionsItemSelected(@NonNull MenuItem opc)
+    {
+        if (opc.getItemId() == R.id.pastillas
+        ) {
+            finish();
+            Intent intent = new Intent(getApplicationContext(), PastillasActivity.class);
+            startActivity(intent);
+            return true;
+        } else if (opc.getItemId() == R.id.notificaciones) {
+            return true;
+        } else if (opc.getItemId() == R.id.opciones) {
+            return true;
+        }else
+        {
+           return super.onOptionsItemSelected(opc);
+        }
+
+    }
+
+        }
+
