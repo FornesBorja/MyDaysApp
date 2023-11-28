@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#C1FAA2"
     tools:context=".MainActivity">
 
   <androidx.appcompat.widget.Toolbar
@@ -14,14 +14,23 @@
       android:background="#99D17B"
       tools:ignore="MissingConstraints"></androidx.appcompat.widget.Toolbar>
 
-  <Button
-      android:id="@+id/button"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginStart="28dp"
-      android:layout_marginTop="120dp"
-      android:text="Button"
+
+  <com.github.sundeepk.compactcalendarview.CompactCalendarView
+      android:id="@+id/compactcalendar_view"
+      android:layout_width="365dp"
+      android:layout_height="484dp"
+      android:layout_marginTop="59dp"
+      app:compactCalendarBackgroundColor="#95bf8f"
+      app:compactCalendarCurrentDayBackgroundColor="#A8CCA3"
+      app:compactCalendarCurrentDayTextColor="#3C3A3A"
+      app:compactCalendarCurrentSelectedDayBackgroundColor="#B47978"
+      app:compactCalendarCurrentSelectedDayTextColor="#3C3A3A"
+      app:compactCalendarTextColor="#000000"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent" />
+      app:layout_constraintTop_toBottomOf="@+id/tb"
+      app:layout_constraintVertical_bias="0.0" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
