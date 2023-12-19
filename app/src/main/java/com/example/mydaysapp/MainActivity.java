@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        tb=(Toolbar)findViewById(R.id.tb);
+        tb=findViewById(R.id.tb);
         setSupportActionBar(tb);
 
 
@@ -78,7 +78,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void cargarDatosFirebase(String usuario) {
+    private void cargarDatosFirebase(String usuario)
+    {
 
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
@@ -93,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult())
                             {
-                                // Aquí, 'document' representa cada documento en la colección 'eventos'
+                                // Aquí, 'document' representa cada documento en la colección 'calendario'
                                 // Puedes acceder a los datos del documento utilizando getData()
                                 Map<String, Object> eventData = document.getData();
 
@@ -111,6 +112,34 @@ public class MainActivity extends AppCompatActivity {
                         }
                     });
         }
+    }
+
+    private void eligeMoodColor(CompactCalendarView compactCalendarView, Date dateClicked)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Selecciona el Estado de Ánimo")
+                .setItems(new CharSequence[]{"Feliz", "Triste", "Neutral"}, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int which) {
+                        // Asigna un color según el estado de ánimo seleccionado
+                        int color = getColorForMood(which);
+                        long fecha=dateClicked.getTime();
+                        FirebaseFirestore db=FirebaseFirestore.getInstance();
+                        FirebaseAuth mAuth=FirebaseAuth.getInstance();
+                        String usuario=mAuth.getUid();
+
+                        String animo=getMoodLabel(which);
+
+                        Event moodEvent = new Event(color,fecha, animo);
+                        compactCalendarView.addEvent(moodEvent);
+                        subirAFirebase(usuario, fecha, animo, color);
+                        // Añade un evento al calendario con el color correspondiente
+
+
+                    }
+                })
+                .setNegativeButton("Cancelar", null)
+                .show();
     }
 
     private static void subirAFirebase(String usuario, long fecha, String animo, int color)
@@ -131,7 +160,7 @@ public class MainActivity extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "DocumentSnapshot successfully written!");
+                        Log.d(TAG, "Documento escrito correctamente");
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -142,33 +171,7 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
-    private void eligeMoodColor(CompactCalendarView compactCalendarView, Date dateClicked)
-    {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Selecciona el Estado de Ánimo")
-                .setItems(new CharSequence[]{"Feliz", "Triste", "Neutral"}, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int which) {
-                        // Asigna un color según el estado de ánimo seleccionado
-                        int color = getColorForMood(which);
-                        long fecha=dateClicked.getTime();
-                        FirebaseFirestore db=FirebaseFirestore.getInstance();
-                        FirebaseAuth mAuth=FirebaseAuth.getInstance();
-                        String usuario=mAuth.getUid();
 
-                        String animo=getMoodLabel(which);
-
-                        Event moodEvent = new Event(color,fecha, getMoodLabel(which));
-                        compactCalendarView.addEvent(moodEvent);
-                        subirAFirebase(usuario, fecha, animo, color);
-                        // Añade un evento al calendario con el color correspondiente
-
-
-                    }
-                })
-                .setNegativeButton("Cancelar", null)
-                .show();
-    }
 
 
     private int getColorForMood(int mood) {
