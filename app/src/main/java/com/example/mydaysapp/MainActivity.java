@@ -1,5 +1,6 @@
 package com.example.mydaysapp;
 
+import static android.graphics.Color.rgb;
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
 import androidx.annotation.NonNull;
@@ -7,6 +8,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.AlarmManagerCompat;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
@@ -177,13 +179,13 @@ public class MainActivity extends AppCompatActivity {
     private int getColorForMood(int mood) {
         switch (mood) {
             case 0: // Feliz
-                return Color.YELLOW;
+                return rgb(240,201,135);
             case 1: // Triste
-                return Color.BLUE;
+                return rgb(137, 189, 158);
             case 2: // Neutral
-                return Color.GREEN;
+                return rgb(60, 21, 59);
             default:
-                return Color.GRAY;
+                return rgb(60, 21, 59);
         }
     }
 

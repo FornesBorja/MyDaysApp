@@ -7,11 +7,12 @@
 
     <TextView
         android:id="@+id/dias_pasTV"
-        android:layout_width="217dp"
-        android:layout_height="50dp"
+        android:layout_width="225dp"
+        android:layout_height="70dp"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
+        android:fontFamily="@font/bebas_neue"
         android:textColor="#673AB7"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -20,16 +21,33 @@
 
     <TextView
         android:id="@+id/horas_pasTV"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
+        android:layout_width="225dp"
+        android:layout_height="70dp"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="4dp"
         android:layout_marginEnd="32dp"
+        android:fontFamily="@font/bebas_neue"
         android:textColor="#673AB7"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/imageView"
         app:layout_constraintTop_toBottomOf="@+id/dias_pasTV" />
+
+    <TextView
+        android:id="@+id/nombre_pasTV"
+        android:layout_width="225dp"
+        android:layout_height="70dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="16dp"
+        android:fontFamily="@font/bebas_neue"
+        android:textColor="#673AB7"
+        app:layout_constraintBottom_toTopOf="@+id/dias_pasTV"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/imageView"
@@ -41,18 +59,17 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_pastilla" />
 
-    <TextView
-        android:id="@+id/nombre_pasTV"
-        android:layout_width="210dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="16dp"
-        android:textColor="#673AB7"
-        app:layout_constraintBottom_toTopOf="@+id/dias_pasTV"
+    <View
+        android:id="@+id/divider"
+        android:layout_width="409dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="?android:attr/listDivider"
+        android:backgroundTint="#000000"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/horas_pasTV" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

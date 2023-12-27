@@ -10,11 +10,20 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Adapter;
 
+import com.github.sundeepk.compactcalendarview.domain.Event;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+
 import java.util.ArrayList;
+import java.util.Map;
 
 public class PastillasActivity extends AppCompatActivity
 {
@@ -39,7 +48,9 @@ public class PastillasActivity extends AppCompatActivity
         DiaToma =new ArrayList<String>();
         HoraToma =new ArrayList<String>();
         adaptador1= new AdaptadorDatos(NombrePastilla,DiaToma,HoraToma);
-
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        String usuario = mAuth.getCurrentUser().getUid();
+        cargarDatosPastillasFirebase(usuario);
 
         recycler.setAdapter(adaptador1);
     }
@@ -63,6 +74,43 @@ public class PastillasActivity extends AppCompatActivity
 
         }
     }
+    private void cargarDatosPastillasFirebase(String usuario)
+    {
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+
+        if (currentUser != null) {
+            String userId = currentUser.getUid();
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+            CollectionReference eventosCollection = db.collection("pastillas");
+
+            eventosCollection.whereEqualTo("usuario", userId)
+                    .get().addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+
+                                // Aquí, 'document' representa cada documento en la colección 'pastillas'
+                                // Puedes acceder a los datos del documento utilizando getData()
+                                Map<String, Object> datosPill = document.getData();
+
+                                // Extraer la información específica del evento
+                                String dia= datosPill.get("dia").toString();
+                                String hora = datosPill.get("hora").toString();
+                                String nombre = datosPill.get("nombre").toString();
+
+                                NombrePastilla.add(nombre);
+                                HoraToma.add(hora);
+                                DiaToma.add(dia);
+                            }
+                            adaptador1.notifyDataSetChanged(); // Mueve esta línea fuera del bucle for
+                        } else {
+                            Log.w("Error", "Error obteniendo documentos.", task.getException());
+                        }
+                    });
+        }
+    }
+
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_ADD_ITEM && resultCode == RESULT_OK) {
