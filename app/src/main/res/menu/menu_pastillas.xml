@@ -6,4 +6,9 @@
         android:title="Añadir"
         android:icon="@drawable/ic_anyadir"
         app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/quitar"
+        android:title="Quitar"
+        android:icon="@drawable/ic_quitar"
+        app:showAsAction="ifRoom"/>
 </menu>
