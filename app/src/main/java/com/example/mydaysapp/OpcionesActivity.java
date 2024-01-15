@@ -17,6 +17,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
+
 public class OpcionesActivity extends AppCompatActivity {
     Button cerrarSesion, cargarIMG;
     ImageView foto;
@@ -37,7 +38,6 @@ public class OpcionesActivity extends AppCompatActivity {
         foto = findViewById(R.id.imageView2);
         cargarIMG = findViewById(R.id.subirIMG_BTN);
 
-        // Inicializar FirebaseStorage
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
 
