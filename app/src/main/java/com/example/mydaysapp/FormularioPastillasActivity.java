@@ -123,63 +123,55 @@ public class FormularioPastillasActivity extends AppCompatActivity {
         });
 
     }
-    private void setRepeatingAlarm(String diaPastilla, String horaAlarma ) {
-        Intent intent = new Intent(this, AlarmReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+    private void setRepeatingAlarm(String diasSeleccionados, String horaAlarma) {
         String[] partes = horaAlarma.split(":");
-
-        // Convertir las partes a enteros
         int hora = Integer.parseInt(partes[0]);
         int minutos = Integer.parseInt(partes[1]);
 
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         if (alarmManager != null) {
             // Configurar para que se repita cada semana
-            Calendar calendar = Calendar.getInstance();
-            if (diaPastilla.contains("L")) {
-                calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-                Log.d(TAG, "Se repetirá lunes");
+            for (int i = 0; i < diasSeleccionados.length(); i++) {
+                char dia = diasSeleccionados.charAt(i);
+                int dayOfWeek = getDayOfWeek(dia);
 
-            }
-            if (diaPastilla.contains("M")) {
-                calendar.set(Calendar.DAY_OF_WEEK, Calendar.TUESDAY);
-                Log.d(TAG, "Se repetirá martes");
+                if (dayOfWeek != -1) {
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.set(Calendar.DAY_OF_WEEK, dayOfWeek);
+                    calendar.set(Calendar.HOUR_OF_DAY, hora);
+                    calendar.set(Calendar.MINUTE, minutos);
+                    Intent intent = new Intent(this, AlarmReceiver.class);
+                    PendingIntent pendingIntent = PendingIntent.getBroadcast(this, i, intent, PendingIntent.FLAG_IMMUTABLE);
 
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+                    } else {
+                        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+                                AlarmManager.INTERVAL_DAY * 7, pendingIntent);
+                    }
+                }
             }
-            if (diaPastilla.contains("X")) {
-                calendar.set(Calendar.DAY_OF_WEEK, Calendar.WEDNESDAY);
-                Log.d(TAG, "Se repetirá miércoles");
+        }
+    }
 
-            }
-            if (diaPastilla.contains("J")) {
-                calendar.set(Calendar.DAY_OF_WEEK, Calendar.THURSDAY);
-                Log.d(TAG, "Se repetirá jueves");
-
-            }
-            if (diaPastilla.contains("V")) {
-                calendar.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
-                Log.d(TAG, "Se repetirá viernes");
-
-            }
-            if (diaPastilla.contains("S")) {
-                calendar.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
-                Log.d(TAG, "Se repetirá sabado");
-
-            }
-            if (diaPastilla.contains("D")) {
-                calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
-                Log.d(TAG, "Se repetirá domingo");
-
-            }
-            calendar.set(Calendar.HOUR_OF_DAY, hora );
-            calendar.set(Calendar.MINUTE, minutos );
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-            } else {
-                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
-                        AlarmManager.INTERVAL_DAY * 7, pendingIntent);
-            }
+    private int getDayOfWeek(char day) {
+        switch (day) {
+            case 'L':
+                return Calendar.MONDAY;
+            case 'M':
+                return Calendar.TUESDAY;
+            case 'X':
+                return Calendar.WEDNESDAY;
+            case 'J':
+                return Calendar.THURSDAY;
+            case 'V':
+                return Calendar.FRIDAY;
+            case 'S':
+                return Calendar.SATURDAY;
+            case 'D':
+                return Calendar.SUNDAY;
+            default:
+                return -1;
         }
     }
 

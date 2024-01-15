@@ -1,20 +1,18 @@
 package com.example.mydaysapp;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -53,7 +51,7 @@ public class LoginActivity extends AppCompatActivity {
                 String email= correoInicio.getText().toString().trim();
                 if(password.isEmpty() && email.isEmpty())
                 {
-                    Toast toast = Toast.makeText(LoginActivity.this, "Tienes que escribir un correo y un email", Toast.LENGTH_SHORT);
+                    Toast toast = Toast.makeText(LoginActivity.this, "Tienes que escribir un correo y una contraseña", Toast.LENGTH_SHORT);
                     toast.show();
                 } else if (password.isEmpty())
                 {
