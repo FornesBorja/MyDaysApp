@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -28,14 +29,18 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     Toolbar tb;
     Button anyadir_animo;
     FirebaseAuth mAuth;
+    TextView textViewMonth;
     CompactCalendarView compactCalendarView;
 
     @SuppressLint("MissingInflatedId")
@@ -46,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         tb=findViewById(R.id.tb);
         setSupportActionBar(tb);
+        textViewMonth = findViewById(R.id.textViewMonth);
 
 
         final ActionBar actionBar = getSupportActionBar();
@@ -58,7 +64,18 @@ public class MainActivity extends AppCompatActivity {
 
         compactCalendarView = findViewById(R.id.compactcalendar_view);
 
+        setDayColumnNames();
 
+        // Obtener la fecha actual
+        Date currentDate = Calendar.getInstance().getTime();
+
+        // Formatear la fecha actual para obtener el nombre del mes
+        SimpleDateFormat monthFormat = new SimpleDateFormat("MMMM", Locale.getDefault());
+        String monthName = monthFormat.format(currentDate);
+
+        // Mostrar el nombre del mes en una etiqueta (TextView, por ejemplo)
+        TextView textViewMonth = findViewById(R.id.textViewMonth);
+        textViewMonth.setText(monthName);
 
         compactCalendarView.setListener(new CompactCalendarView.CompactCalendarViewListener() {
             @Override
@@ -69,13 +86,19 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onMonthScroll(Date firstDayOfNewMonth) {
-                // Se ejecuta cuando se cambia de mes
-            }
+                updateMonthLabel(firstDayOfNewMonth);            }
         });
 
     }
 
+    private void updateMonthLabel(Date date) {
+        // Formatear la fecha para obtener el nombre del mes
+        SimpleDateFormat monthFormat = new SimpleDateFormat("MMMM", Locale.getDefault());
+        String monthName = monthFormat.format(date);
 
+        // Mostrar el nombre del mes en la etiqueta
+        textViewMonth.setText(monthName);
+    }
     private void cargarDatosFirebase(String usuario)
     {
 
@@ -111,12 +134,18 @@ public class MainActivity extends AppCompatActivity {
                     });
         }
     }
+    private void setDayColumnNames() {
+        // Obtener los nombres de los días de la semana en mayúsculas
+        String[] dayColumnNames = new String[]{"L", "M", "X", "J", "V", "S", "D"};
 
+        // Configurar los nombres de los días de la semana en CompactCalendarView
+        compactCalendarView.setDayColumnNames(dayColumnNames);
+    }
     private void eligeMoodColor(CompactCalendarView compactCalendarView, Date dateClicked)
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Selecciona el Estado de Ánimo")
-                .setItems(new CharSequence[]{"Feliz", "Triste", "Neutral"}, new DialogInterface.OnClickListener() {
+                .setItems(new CharSequence[]{"Triste", "Feliz", "Neutral"}, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int which) {
                         // Asigna un color según el estado de ánimo seleccionado
@@ -174,9 +203,9 @@ public class MainActivity extends AppCompatActivity {
 
     private int getColorForMood(int mood) {
         switch (mood) {
-            case 0: // Feliz
+            case 0: // Triste
                 return rgb(240,201,135);
-            case 1: // Triste
+            case 1: // Feliz
                 return rgb(137, 189, 158);
             case 2: // Neutral
                 return rgb(60, 21, 59);
