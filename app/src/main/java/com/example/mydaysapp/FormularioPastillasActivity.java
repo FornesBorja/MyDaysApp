@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -66,11 +67,15 @@ public class FormularioPastillasActivity extends AppCompatActivity {
         {
             @Override
             public void onClick(View view) {
-                if (pastillaNombreET.getText().toString() != "") {
-                    pastillaNombre = pastillaNombreET.getText().toString();
-                } else {
-                    Toast.makeText(getApplicationContext(), "Tienes que poner un nombre válido", Toast.LENGTH_SHORT).show();
+                if (TextUtils.isEmpty(pastillaNombreET.getText().toString())) {
+                    Toast.makeText(getApplicationContext(), "Debes ingresar un nombre válido", Toast.LENGTH_SHORT).show();
+                    return;
                 }
+                if (TextUtils.isEmpty(horaAlarma)) {
+                    Toast.makeText(getApplicationContext(), "Debes seleccionar una hora de alarma", Toast.LENGTH_SHORT).show();
+                    return; // Sale del método onClick sin continuar
+                }
+
                 if (!lunes.isChecked() && !martes.isChecked() && !miercoles.isChecked() && !jueves.isChecked() && !viernes.isChecked() && !sabado.isChecked() && !domingo.isChecked()) {
 
                     Toast.makeText(getApplicationContext(), "Tienes que elegir al menos un día", Toast.LENGTH_SHORT).show();
@@ -105,6 +110,8 @@ public class FormularioPastillasActivity extends AppCompatActivity {
                         diaPastilla = diaPastilla + " D ";
 
                     }
+                    pastillaNombre = pastillaNombreET.getText().toString();
+
                     Intent intent = new Intent();
                     intent.putExtra("diaPastilla", diaPastilla);
                     intent.putExtra("pastillaNombre", pastillaNombre);
