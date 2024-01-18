@@ -10,8 +10,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -52,7 +54,18 @@ public class MainActivity extends AppCompatActivity {
         tb=findViewById(R.id.tb);
         setSupportActionBar(tb);
         textViewMonth = findViewById(R.id.textViewMonth);
+        compactCalendarView = findViewById(R.id.compactcalendar_view);
+        // Obtener la fecha actual
+        Date currentDate = Calendar.getInstance().getTime();
+        textViewMonth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+                // Hacer que el CompactCalendarView se desplace a la fecha actual
+                compactCalendarView.setCurrentDate(currentDate);
+                 updateLabel(currentDate);
+            }
+        });
 
         final ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(false);
@@ -62,42 +75,60 @@ public class MainActivity extends AppCompatActivity {
         cargarDatosFirebase(usuario);
 
 
-        compactCalendarView = findViewById(R.id.compactcalendar_view);
 
         setDayColumnNames();
 
-        // Obtener la fecha actual
-        Date currentDate = Calendar.getInstance().getTime();
+
 
         // Formatear la fecha actual para obtener el nombre del mes
         SimpleDateFormat monthFormat = new SimpleDateFormat("MMMM", Locale.getDefault());
         String monthName = monthFormat.format(currentDate);
+        SimpleDateFormat yearFormat = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            yearFormat = new SimpleDateFormat("YYYY", Locale.getDefault());
+        }
+        String year = yearFormat.format(currentDate);
 
         // Mostrar el nombre del mes en una etiqueta (TextView, por ejemplo)
         TextView textViewMonth = findViewById(R.id.textViewMonth);
-        textViewMonth.setText(monthName);
+        textViewMonth.setText(monthName+ " "+year );
 
         compactCalendarView.setListener(new CompactCalendarView.CompactCalendarViewListener() {
             @Override
             public void onDayClick(Date dateClicked) {
-                // Implementa la lógica para cambiar el color según el estado de ánimo seleccionado
-                eligeMoodColor(compactCalendarView, dateClicked);
+                // Obtener la fecha actual
+                Date currentDate = Calendar.getInstance().getTime();
+
+                // Verificar si la fecha clicada es igual o anterior a la fecha actual
+                if (dateClicked.before(currentDate) || dateClicked.equals(currentDate)) {
+                    // Implementa la lógica para cambiar el color según el estado de ánimo seleccionado
+                    eligeMoodColor(compactCalendarView, dateClicked);
+                } else {
+                    // Fecha futura, muestra un mensaje o realiza alguna acción según tus necesidades
+                    Toast.makeText(MainActivity.this, "No puedes seleccionar un estado de ánimo para el futuro", Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
             public void onMonthScroll(Date firstDayOfNewMonth) {
-                updateMonthLabel(firstDayOfNewMonth);            }
+                updateLabel(firstDayOfNewMonth);            }
         });
 
     }
 
-    private void updateMonthLabel(Date date) {
+    private void updateLabel(Date date) {
         // Formatear la fecha para obtener el nombre del mes
         SimpleDateFormat monthFormat = new SimpleDateFormat("MMMM", Locale.getDefault());
         String monthName = monthFormat.format(date);
+        SimpleDateFormat yearFormat = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            yearFormat = new SimpleDateFormat("YYYY", Locale.getDefault());
+        }
+        String year = yearFormat.format(date);
 
+        // Mostrar el nombre del mes en una etiqueta (TextView, por ejemplo)
+        textViewMonth.setText(monthName+ " "+year );
         // Mostrar el nombre del mes en la etiqueta
-        textViewMonth.setText(monthName);
     }
     private void cargarDatosFirebase(String usuario)
     {

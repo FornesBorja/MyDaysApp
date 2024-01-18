@@ -50,6 +50,7 @@ public class OpcionesActivity extends AppCompatActivity {
         CorreoV=findViewById(R.id.CorreoV);
         CorreoC=findViewById(R.id.correoC);
         CorreoC.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("SuspiciousIndentation")
             @Override
             public void onClick(View v) {
                nuevoCorreo=correoTV.getText().toString();
