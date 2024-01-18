@@ -48,6 +48,7 @@
         android:layout_width="257dp"
         android:layout_height="47dp"
         android:layout_marginTop="75dp"
+        android:fontFamily="@font/bebas_neue"
         android:text="Bienvenido/a"
         android:textAlignment="center"
         android:textColor="#C96480"
@@ -68,5 +69,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/contrareg_et" />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:srcCompat="@drawable/iconoappcirculo" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
