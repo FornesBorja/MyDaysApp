@@ -208,25 +208,25 @@ public class FormularioPastillasActivity extends AppCompatActivity {
                 });
     }
 
-    public void SeleccionarHora(View view)
-    {
-        TimePickerDialog.OnTimeSetListener onTimeSetListener = new TimePickerDialog.OnTimeSetListener()
-        {
+    public void SeleccionarHora(View view) {
+        TimePickerDialog.OnTimeSetListener onTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
             @Override
-            public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute)
-            {
+            public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                // Formatear la hora y el minuto a dos dígitos
+                String formattedHour = String.format("%02d", selectedHour);
+                String formattedMinute = String.format("%02d", selectedMinute);
+
+                // Guardar la hora formateada
                 hora = selectedHour;
                 minuto = selectedMinute;
-                horaAlarma=hora+":"+minuto;
+                horaAlarma = formattedHour + ":" + formattedMinute;
             }
         };
 
-
-        TimePickerDialog timePickerDialog = new TimePickerDialog(this, /*style,*/ onTimeSetListener, hora, minuto, true);
-
+        TimePickerDialog timePickerDialog = new TimePickerDialog(this, onTimeSetListener, hora, minuto, true);
         timePickerDialog.setTitle("Selecciona hora");
         timePickerDialog.show();
-
     }
+
 
 }
