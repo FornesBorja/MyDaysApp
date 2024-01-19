@@ -121,7 +121,7 @@ public class FormularioPastillasActivity extends AppCompatActivity {
                     // Cierra la Activity del formulario
                     finish();
                     subirAFirebasePastillas(usuario, diaPastilla, pastillaNombre, horaAlarma);
-                    setRepeatingAlarm(diaPastilla, horaAlarma);
+                    setRepeatingAlarm(diaPastilla, horaAlarma, pastillaNombre);
 
 
                 }
@@ -130,7 +130,7 @@ public class FormularioPastillasActivity extends AppCompatActivity {
         });
 
     }
-    private void setRepeatingAlarm(String diasSeleccionados, String horaAlarma) {
+    private void setRepeatingAlarm(String diasSeleccionados, String horaAlarma,String nombrePastilla) {
         String[] partes = horaAlarma.split(":");
         int hora = Integer.parseInt(partes[0]);
         int minutos = Integer.parseInt(partes[1]);
@@ -155,6 +155,7 @@ public class FormularioPastillasActivity extends AppCompatActivity {
                     calendar.add(Calendar.DAY_OF_YEAR, daysUntilDesiredDay);
 
                     Intent intent = new Intent(this, AlarmReceiver.class);
+                    intent.putExtra("NOMBRE_PASTILLA", nombrePastilla);
                     PendingIntent pendingIntent = PendingIntent.getBroadcast(this, i, intent, PendingIntent.FLAG_IMMUTABLE);
 
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

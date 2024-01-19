@@ -10,8 +10,10 @@ public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         try {
-            Log.d(TAG, "onReceive ejecutado");
-            NotificationUtils.showNotification(context, "Recordatorio", "Tienes que tomarte tus pastillas");
+            String nombrePastilla = intent.getStringExtra("nombrePastilla");
+
+            // Mostrar la notificación con el nombre de la pastilla
+            NotificationUtils.showNotification(context, "Recordatorio", "Tienes que tomarte " + nombrePastilla);
         } catch (Exception e) {
             Log.e(TAG, "Error en onReceive", e);
         }
