@@ -120,8 +120,9 @@ public class FormularioPastillasActivity extends AppCompatActivity {
                     setResult(RESULT_OK, intent);
                     // Cierra la Activity del formulario
                     finish();
+                    String nombrePastilla=pastillaNombre;
                     subirAFirebasePastillas(usuario, diaPastilla, pastillaNombre, horaAlarma);
-                    setRepeatingAlarm(diaPastilla, horaAlarma, pastillaNombre);
+                    setRepeatingAlarm(diaPastilla, horaAlarma, nombrePastilla);
 
 
                 }
@@ -130,7 +131,7 @@ public class FormularioPastillasActivity extends AppCompatActivity {
         });
 
     }
-    private void setRepeatingAlarm(String diasSeleccionados, String horaAlarma,String nombrePastilla) {
+    private void setRepeatingAlarm(String diasSeleccionados, String horaAlarma, String nombrePastilla) {
         String[] partes = horaAlarma.split(":");
         int hora = Integer.parseInt(partes[0]);
         int minutos = Integer.parseInt(partes[1]);
@@ -155,11 +156,14 @@ public class FormularioPastillasActivity extends AppCompatActivity {
                     calendar.add(Calendar.DAY_OF_YEAR, daysUntilDesiredDay);
 
                     Intent intent = new Intent(this, AlarmReceiver.class);
-                    intent.putExtra("NOMBRE_PASTILLA", nombrePastilla);
-                    PendingIntent pendingIntent = PendingIntent.getBroadcast(this, i, intent, PendingIntent.FLAG_IMMUTABLE);
+                    intent.putExtra("nombrePastilla", nombrePastilla);
+
+                    // Usar hashCode de nombrePastilla + fecha + hora para generar un código de solicitud único
+                    int uniqueRequestCode = nombrePastilla.hashCode() + calendar.get(Calendar.HOUR_OF_DAY) + calendar.get(Calendar.MINUTE);
+                    PendingIntent pendingIntent = PendingIntent.getBroadcast(this, uniqueRequestCode, intent, PendingIntent.FLAG_IMMUTABLE);
 
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+                        alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
                     } else {
                         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
                                 AlarmManager.INTERVAL_DAY * 7, pendingIntent);
@@ -168,6 +172,7 @@ public class FormularioPastillasActivity extends AppCompatActivity {
             }
         }
     }
+
 
 
     private int getDayOfWeek(char day) {
