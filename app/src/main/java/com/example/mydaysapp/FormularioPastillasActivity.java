@@ -137,21 +137,28 @@ public class FormularioPastillasActivity extends AppCompatActivity {
 
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         if (alarmManager != null) {
-            // Configurar para que se repita cada semana
             for (int i = 0; i < diasSeleccionados.length(); i++) {
                 char dia = diasSeleccionados.charAt(i);
                 int dayOfWeek = getDayOfWeek(dia);
 
                 if (dayOfWeek != -1) {
                     Calendar calendar = Calendar.getInstance();
-                    calendar.set(Calendar.DAY_OF_WEEK, dayOfWeek);
                     calendar.set(Calendar.HOUR_OF_DAY, hora);
                     calendar.set(Calendar.MINUTE, minutos);
+                    calendar.set(Calendar.SECOND, 0);
+
+                    // Ajustar la fecha y hora al siguiente día de la semana seleccionado
+                    int currentDayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+                    int desiredDayOfWeek = getDayOfWeek(dia);
+                    int daysUntilDesiredDay = (desiredDayOfWeek - currentDayOfWeek + 7) % 7;
+
+                    calendar.add(Calendar.DAY_OF_YEAR, daysUntilDesiredDay);
+
                     Intent intent = new Intent(this, AlarmReceiver.class);
                     PendingIntent pendingIntent = PendingIntent.getBroadcast(this, i, intent, PendingIntent.FLAG_IMMUTABLE);
 
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+                        alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
                     } else {
                         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
                                 AlarmManager.INTERVAL_DAY * 7, pendingIntent);
@@ -160,6 +167,7 @@ public class FormularioPastillasActivity extends AppCompatActivity {
             }
         }
     }
+
 
     private int getDayOfWeek(char day) {
         switch (day) {
